@@ -4,6 +4,6 @@ The project does not need to be installed directly on the machine, but if you wa
 
 The project can be accessed through the URL "https://disnorte.dreamhosters.com/"
 
-<!-- Dashboard Access -->
+##Dashboard Access:
 user: moviemation
 password: cDqF6tEiSm
