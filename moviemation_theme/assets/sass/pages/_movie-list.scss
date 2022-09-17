@@ -1,0 +1,26 @@
+.movie-list {
+    &__filter {
+        @include filter;
+    }
+    
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 3rem;
+
+        margin-bottom: 10rem
+    }
+
+    &__movie {
+        @include card-movie;
+    }
+
+    &__pagination {
+        display: none;
+    }
+
+    &__more {
+        @include load-more;
+    }
+}

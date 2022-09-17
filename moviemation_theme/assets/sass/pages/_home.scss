@@ -1,0 +1,33 @@
+.upcoming-movies {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3rem;
+    margin: 10rem auto 0;
+    
+    h2 {
+        text-align: center;
+        width: 100%;
+    }
+
+    &__movie {
+        @include card-movie;
+    }
+}
+
+.popular-actors {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3rem;
+    margin: 10rem auto;
+
+    h2 {
+        width: 100%;
+        text-align: center;
+    }
+
+    &__actor {
+        @include card-actor;
+    }
+}

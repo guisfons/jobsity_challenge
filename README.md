@@ -1,9 +1,17 @@
-Hello everyone, this is the challenge project using WordPress, unfortunately it is not complete, due to technical problems I had with my laptop, I was only able to start developing the project on Sunday night, which was when I managed to fix it. If you need it and I can have another shot, I would be eternally grateful.
+Hello everyone, thank you so much for the chance to improve the project!
+If you want to send me another one focusing more on WordPress I'll gladly accept it, because I really want to step up in my career, learn more and of course be an addition to the team!
+This challenge is using WordPress.
 
-The project does not need to be installed directly on the machine, but if you want, just copy the project theme and place any WordPress in an instance and import the database that is attached to the "db" folder. Or after setting up a WordPress instance, install the "All-in-One WP Migration" plugin (https://wordpress.org/plugins/all-in-one-wp-migration/), and import the "wp-website.wpress" with the plugin
+There are two things that I've could solve yet:
+1) The scroll pagination without using the filters;
+2) The date order of the movies related to the actor.
 
-The project can be accessed through the URL "https://disnorte.dreamhosters.com/"
+The project does not need to be installed directly on the machine (you can access it via 'https://moviemation.dreamhosters.com/'), but if you want, just copy the project theme and place any WordPress in an instance and import the file inside the "db" folder:
+If you want to import natively using WordPress please select the "moviemation.WordPress.xml" file, but I higly recomend to install the "All-in-One WP Migration" plugin (https://wordpress.org/plugins/all-in-one-wp-migration/), and import the "wmoviemation.wpress" with the plugin
+If you choose the second option, you will need to re sign up on the WP Dashboard, using this credencials:
 
 ##Dashboard Access:
 user: moviemation
 password: cDqF6tEiSm
+
+Again, thank you all and I hope I can fit in your team!
