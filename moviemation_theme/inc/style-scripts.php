@@ -13,7 +13,7 @@ function themeFiles() {
     wp_register_style('style', get_stylesheet_directory_uri() . '/assets/css/main.min.css', array(), ASSETS_VERSION, 'screen');
     wp_enqueue_style('style');
 
-    loadLibsScriptsForTemplate('jquery-3.6.1.min.js');
+    // loadLibsScriptsForTemplate('jquery-3.6.1.min.js');
 
     wp_register_script('javascript', get_stylesheet_directory_uri() . '/assets/js/main.js', array(), ASSETS_VERSION, true);
     wp_enqueue_script('javascript');

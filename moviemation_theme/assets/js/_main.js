@@ -1,6 +1,3 @@
-const $ = document.querySelector.bind(document)
-const $$ = document.querySelectorAll.bind(document)
-
 // API
 const url = window.location.search
 const apiKey = 'api_key=197192daa2a463199eec99eeded92000'
@@ -11,7 +8,7 @@ const movieBaseUrl = baseUrl + 'movie/'
 const upcomingUrl = movieBaseUrl + 'upcoming?' + apiKey
 const movieUrl = baseUrl + 'discover/movie?sort_by=popularity.desc&' + apiKey
 const movieSearch = baseUrl + 'search/movie?' + apiKey
-const movieId = url.substring(url.lastIndexOf('?id=') + 4)
+const movieId =  url.substring(url.lastIndexOf('?id=') + 4)
 const movieListUrl = baseUrl + 'movie/' + movieId + '/lists'
 const movieDetail = movieBaseUrl + movieId + '?' + apiKey
 const movieReview = movieBaseUrl + movieId + '/reviews?' + apiKey
@@ -27,18 +24,91 @@ const listActorUrl = baseUrl + 'person/popular?'
 const popularActorUrl = actorUrl + 'popular?' + apiKey
 const actorSearch = baseUrl + 'search/person?' + apiKey
 
-const castUrl = movieBaseUrl + movieId + '/credits?' + apiKey
+const castUrl = movieBaseUrl +  movieId + '/credits?' + apiKey
 
 const genreUrl = baseUrl + 'genre/movie/list?' + apiKey
 
-let genresList = [{ "id": 28, "name": "Action" }, { "id": 12, "name": "Adventure" }, { "id": 16, "name": "Animation" }, { "id": 35, "name": "Comedy" }, { "id": 80, "name": "Crime" }, { "id": 99, "name": "Documentary" }, { "id": 18, "name": "Drama" }, { "id": 10751, "name": "Family" }, { "id": 14, "name": "Fantasy" }, { "id": 36, "name": "History" }, { "id": 27, "name": "Horror" }, { "id": 10402, "name": "Music" }, { "id": 9648, "name": "Mystery" }, { "id": 10749, "name": "Romance" }, { "id": 878, "name": "Science Fiction" }, { "id": 10770, "name": "TV Movie" }, { "id": 53, "name": "Thriller" }, { "id": 10752, "name": "War" }, { "id": 37, "name": "Western" }]
+let genresList = [
+    {
+        "id": 28,
+        "name": "Action"
+    },
+    {
+        "id": 12,
+        "name": "Adventure"
+    },
+    {
+        "id": 16,
+        "name": "Animation"
+    },
+    {
+        "id": 35,
+        "name": "Comedy"
+    },
+    {
+        "id": 80,
+        "name": "Crime"
+    },
+    {
+        "id": 99,
+        "name": "Documentary"
+    },
+    {
+        "id": 18,
+        "name": "Drama"
+    },
+    {
+        "id": 10751,
+        "name": "Family"
+    },
+    {
+        "id": 14,
+        "name": "Fantasy"
+    },
+    {
+        "id": 36,
+        "name": "History"
+    },
+    {
+        "id": 27,
+        "name": "Horror"
+    },
+    {
+        "id": 10402,
+        "name": "Music"
+    },
+    {
+        "id": 9648,
+        "name": "Mystery"
+    },
+    {
+        "id": 10749,
+        "name": "Romance"
+    },
+    {
+        "id": 878,
+        "name": "Science Fiction"
+    },
+    {
+        "id": 10770,
+        "name": "TV Movie"
+    },
+    {
+        "id": 53,
+        "name": "Thriller"
+    },
+    {
+        "id": 10752,
+        "name": "War"
+    },
+    {
+        "id": 37,
+        "name": "Western"
+    }
+]
 
-// fetch(url).then(res => res.json()).then(data => {
-
-// })
-
-function pageChange(page) {
-
+function pageChange(page){
+    
 }
 
 let attempts;
@@ -48,14 +118,17 @@ function doAjaxRequest() {
 }
 
 function getMovies(url) {
-    const fetchMovies = fetch(url).then(res => res.json()).then(data => {
-        if (document.body.contains($('.actor'))) {
+    $.ajax({
+        url: url,
+        context: document.body
+    }).done(function (data) {
+        if($('.actor').length) {
             let dateFormated = new Date(data.release_date)
-            let genresName = data.genres.map(function (e) {
+            let genresName = data.genres.map(function(e) {
                 return e.name
             }).join(', ')
-
-            $('.actor-details__movies').innerHTML += `
+            
+            $('.actor-details__movies').append(`
             <article class="movie-list__movie">
                 <a href="/movies/movie/?${data.title.replace(/\s+/g, '-').replace(':', '').replace('"', '').replace('.', '').toLowerCase() + '?id=' + data.id}">
                     <figure>
@@ -67,23 +140,24 @@ function getMovies(url) {
                         <p class="upcoming-movies__genre">Genre: ${genresName}</p>
                     </div>
                 </a>
-            </article>`
+            </article>`)
         } else {
-            if (data.results.length !== 0) {
+            if(data.results.length !== 0){
                 listMovies(data.results)
             }
         }
-    }).catch(function() {
-        setTimeout(function(){ return fetchMovies}, 500)
     })
 }
 
 function getMovie(url) {
-    const fetchMovie = fetch(url).then(res => res.json()).then(data => {
-        const { poster_path, original_title, popularity, release_date, title, genres, original_language, production_companies, overview } = data
+    $.ajax({
+        url: url,
+        context: document.body
+    }).done(function (data) {
+        const {poster_path, original_title, popularity, release_date, title, genres, original_language, production_companies, overview} = data
         let dateFormated = new Date(release_date)
 
-        $('.movie-details').innerHTML += `
+        $('.movie-details').append(`
         <div class="wrapper movie-details__info">
             <figure class="movie-details__photo"><img src="${poster_path ? imgUrl + poster_path : 'http://via.placeholder.com/500x750'}" alt="${title}" loading="lazy"></figure>
             <div class="movie-details__header">
@@ -102,17 +176,15 @@ function getMovie(url) {
         </div>
         <figure class="wrapper movie-details__trailer"></figure>
         <div class="movie-details__reviews"><div class="wrapper"><h3>Reviews</h3></div></div>
-        <div class="movie-details__similar"></div>`
+        <div class="movie-details__similar"></div>`)
 
-        genres.forEach(function (genre, i) {
-            $('.movie-details__genre').innerHTML += '<span>' + genre.name + '</span>'
+        $.each(genres, function(i) {
+            $('.movie-details__genre').append('<span>'+genres[i].name+'</span>')
         })
 
-        production_companies.forEach(function (company, i) {
-            $('.movie-details__companies').innerHTML += '<span>' + company.name + '</span>'
+        $.each(production_companies, function(i) {
+            $('.movie-details__companies').append('<span>'+production_companies[i].name+'</span>')
         })
-    }).catch(function() {
-        setTimeout(function(){ return fetchMovie}, 500)
     })
 
     getReviews(movieReview)
@@ -122,22 +194,26 @@ function getMovie(url) {
 }
 
 function getSimilarMovie(url) {
-    const fetchSimilarMovie = fetch(url).then(res => res.json()).then(data => {
-        $('.movie-details__similar').innerHTML += '<h3>Similar Movies</h3>'
-        data.results.forEach(function (data, i) {
-            const { poster_path, title, release_date, genre_ids, id } = data
+    $.ajax({
+        url: url,
+        context: document.body
+    }).done(function (data) {
+        
+        $('.movie-details__similar').append('<h3>Similar Movies</h3>')
+        $.each(data.results, function(i) {
+            const { poster_path, title, release_date, genre_ids, id } = data.results[i]
             let dateFormated = new Date(release_date)
-    
+
             let find = genresList.filter(e => {
                 return genre_ids.includes(e.id)
             })
     
-            let genresName = find.map(function (e) {
+            let genresName = find.map(function(e) {
                 return e.name
             }).join(', ')
-    
-            if (i < 5) {
-                $('.movie-details__similar').innerHTML += `
+
+            if(i < 5) {
+                $('.movie-details__similar').append(`
                 <article>
                     <a href="/movies/movie/?${title.replace(/\s+/g, '-').replace(':', '').replace('"', '').replace('.', '').toLowerCase() + '?id=' + id}">
                         <figure>
@@ -149,52 +225,54 @@ function getSimilarMovie(url) {
                             <p class="upcoming-movies__genre">Genre: ${genresName}</p>
                         </div>
                     </a>
-                </article>`
+                </article>`)
             }
         })
-    }).catch(function() {
-        setTimeout(function(){ return fetchSimilarMovie}, 500)
     })
 }
 
 function getReviews(url) {
-    const fetchReviews = fetch(url).then(res => res.json()).then(data => {
-        data.results.forEach(function (data, i) {
-            const { author, content } = data
-            $('.movie-details__reviews .wrapper').innerHTML += `
+    $.ajax({
+        url: url,
+        context: document.body
+    }).done(function (data) {
+        $.each(data.results, function(i) {
+            const {author, content} = data.results[i]
+            $('.movie-details__reviews .wrapper').append(`
             <article>
                 <p>${content}</p>
                 <h4>${author}</h4>
-            </article>`
+            </article>`)
         })
-    }).catch(function() {
-        setTimeout(function(){ return fetchReviews}, 500)
     })
 }
 
 function getCast(url) {
-    const fetchCast = fetch(url).then(res => res.json()).then(data => {
-        if (document.body.contains($('.movie'))) {
-            data.cast.forEach(function (cast, i) {
-                const { id, name } = cast
-                $('.movie-details__cast').innerHTML += '<a href="/actors/actor/?' + name.replace(/\s+/g, '-').replace(':', '').replace('"', '').replace('.', '').toLowerCase() + '?id=' + id + '">' + name + '</a>'
+    $.ajax({
+        url: url,
+        context: document.body
+    }).done(function (data) {
+        if($('.movie').length) {
+            $.each(data.cast, function(i) {
+                const {id, name} = data.cast[i]
+                $('.movie-details__cast').append('<a href="/actors/actor/?'+name.replace(/\s+/g, '-').replace(':', '').replace('"', '').replace('.', '').toLowerCase()+'?id='+id+'">'+ name +'</a>')
             })
         }
-    
-        if (document.body.contains($('.actor'))) {
-            data.cast.forEach(function (cast, i) {
-                const { title, character, release_date, poster_path, id, genre_ids } = cast
+
+        if($('.actor').length) {
+            $.each(data.cast, function(i) {
+                const {title, character, release_date, poster_path, id, genre_ids} = data.cast[i]
                 let dateFormated = new Date(release_date)
-    
+
                 let find = genresList.filter(e => {
                     return genre_ids.includes(e.id)
                 })
-    
-                let genresName = find.map(function (e) {
+        
+                let genresName = find.map(function(e) {
                     return e.name
                 }).join(', ')
-    
-                $('.actor-details__movies').innerHTML += `
+
+                $('.actor-details__movies').append(`
                 <article data-id="${i}" data-release="${release_date}">
                     <a href="/movies/movie/?${title.replace(/\s+/g, '-').replace(':', '').replace('"', '').replace('.', '').toLowerCase() + '?id=' + id}">
                         <figure>
@@ -207,19 +285,19 @@ function getCast(url) {
                             <p class="upcoming-movies__genre">Genre: ${genresName}</p>
                         </div>
                     </a>
-                </article>`
+                </article>`)
             })
-    
-            var movies = new Array($('.actor-details__movies article'));
-            movies.sort(function (a, b) {
+
+            var movies = $.makeArray($('.actor-details__movies article'));
+            movies.sort(function(a, b) {
                 return $(b).data('release') - $(a).data('release');
             })
         }
-    
-        if (document.body.contains($('.actor-list'))) {
-            data.cast.forEach(function (cast, i) {
-                const { name, profile_path, id } = cast
-                $('.actor-list__list').innerHTML += `
+
+        if($('.actor-list').length) {
+            $.each(data.cast, function(i) {
+                const {name, profile_path, id} = data.cast[i]
+                $('.actor-list__list').append(`
                 <article class="actor-list__actor" data-id="${i}">
                     <a href="/actors/actor/?${name.replace(/\s+/g, '-').replace(':', '').toLowerCase() + '?id=' + id}">
                         <figure>
@@ -227,50 +305,55 @@ function getCast(url) {
                         </figure>
                         <h3>${name}</h3>
                     </a>
-                </article>`
+                </article>`)
             })
         }
-    }).catch(function() {
-        setTimeout(function(){ return fetchCast}, 500)
     })
 }
 
 function getTrailer(url) {
-    const fetchTrailer = fetch(url).then(res => res.json()).then(data => {
-        if (document.body.contains($('.movie'))) {
-            data.results.forEach(function (data, i) {
-                const { key, type, name } = data
-                if (name == 'Official Trailer' && type == 'Trailer') {
-                    $('.movie-details__trailer').innerHTML += '<iframe src="https://www.youtube.com/embed/' + key + '?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+    $.ajax({
+        url: url,
+        context: document.body
+    }).done(function (data) {
+        if($('.movie').length) {
+
+            $.each(data.results, function(i) {
+                const {key, type, name} = data.results[i]
+                if(name == 'Official Trailer' && type == 'Trailer') {
+                    $('.movie-details__trailer').append('<iframe src="https://www.youtube.com/embed/'+key+'?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>')
                 }
             })
+
         }
-    }).catch(function() {
-        setTimeout(function(){ return fetchTrailer}, 500)
     })
 }
 
 function getActors(url) {
-    const fetchActors = fetch(url).then(res => res.json()).then(data => {
+    $.ajax({
+        url: url,
+        context: document.body
+    }).done(function (data) {
         listActors(data.results)
-    }).catch(function() {
-        setTimeout(function(){ return fetchActors}, 500)
     })
 }
 
 function getActor(url) {
-    const fetchActor = fetch(url).then(res => res.json()).then(data => {
-        const { id, profile_path, name, birthday, place_of_birth, deathday, homepage, popularity, biography } = data
+    $.ajax({
+        url: url,
+        context: document.body
+    }).done(function (data) {
+        const {id, profile_path, name, birthday, place_of_birth, deathday, homepage, popularity, biography} = data
         let birthdayFormated = new Date(birthday)
         let deathdayFormated = new Date(deathday)
-    
-        $('.actor-details').innerHTML += `
+
+        $('.actor-details').append(`
         <div class="wrapper actor-details__info">
             <figure class="actor-details__photo"><img src="${profile_path ? imgUrl + profile_path : 'http://via.placeholder.com/500x750'}" alt="${name}" loading="lazy"></figure>
             <div class="actor-details__header">
                 <h1 class="actor-details__title">${name}</h1>
                 <span class="actor-details__birthday">
-                    ${birthdayFormated.toLocaleDateString('en-US')} ${deathday ? ' - ' + deathdayFormated.toLocaleDateString('en-US') : '' + ' (Age: ' + getAge(birthdayFormated.toLocaleDateString('en-US')) + ')'}
+                    ${birthdayFormated.toLocaleDateString('en-US')} ${deathday ? ' - ' + deathdayFormated.toLocaleDateString('en-US') : '' + ' (Age: '+ getAge(birthdayFormated.toLocaleDateString('en-US')) +')'}
                 </span>
                 <article>
                     <p class="actor-details__birth"><strong>Place of birth:</strong> ${place_of_birth}</p>
@@ -281,9 +364,7 @@ function getActor(url) {
             </div>
         </div>
         <div class="actor-details__gallery"><h3>Gallery</h3></div>
-        <div class="actor-details__movies"><h3>Known For</h3></div>`
-    }).catch(function() {
-        setTimeout(function(){ return fetchActor}, 500)
+        <div class="actor-details__movies"><h3>Known For</h3></div>`)
     })
 
     getGallery(actorGalleyUrl)
@@ -302,36 +383,37 @@ function getAge(dateString) {
 }
 
 function getGallery(url) {
-    const fetchGallery = fetch(url).then(res => res.json()).then(data => {
-        if (document.body.contains($('.actor'))) {
-            data.profiles.forEach(function (profile, i) {
-                if (i < 10) {
-                    const { file_path } = profile
-                    $('.actor-details__gallery').innerHTML += '<figure><img src="' + imgUrl + '/' + file_path + '" loading="lazy"></figure>'
+    $.ajax({
+        url: url,
+        context: document.body
+    }).done(function (data) {
+        if($('.actor').length) {
+            $.each(data.profiles, function(i) {
+                if(i < 10) {
+                    const {file_path} = data.profiles[i]
+                    $('.actor-details__gallery').append('<figure><img src="'+imgUrl+'/'+file_path+'" loading="lazy"></figure>')
                 }
             })
         }
-    }).catch(function() {
-        setTimeout(function(){ return fetchGallery}, 500)
     })
 }
 
 function listMovies(data) {
-    data.forEach(function (movie, i) {
-        const { poster_path, title, release_date, genre_ids, id } = movie
+    $.each(data, function (i) {
+        const { poster_path, title, release_date, genre_ids, id } = data[i]
         let dateFormated = new Date(release_date)
 
         let find = genresList.filter(e => {
             return genre_ids.includes(e.id)
         })
 
-        let genresName = find.map(function (e) {
+        let genresName = find.map(function(e) {
             return e.name
         }).join(', ')
 
-        if (document.body.contains($('.home'))) {
+        if ($('.home').length) {
             if (i < 10) {
-                $('.upcoming-movies').innerHTML += `
+                $('.upcoming-movies').append(`
                 <article class="upcoming-movies__movie">
                     <a href="/movies/movie/?${title.replace(/\s+/g, '-').replace(':', '').replace('"', '').replace('.', '').toLowerCase() + '?id=' + id}">
                         <figure>
@@ -343,12 +425,12 @@ function listMovies(data) {
                             <p class="upcoming-movies__genre">Genre: ${genresName}</p>
                         </div>
                     </a>
-                </article>`
+                </article>`)
             }
         }
 
-        if (document.body.contains($('.movie-list'))) {
-            $('.movie-list__list').innerHTML += `
+        if ($('.movie-list').length) {
+            $('.movie-list__list').append(`
             <article class="movie-list__movie">
                 <a href="/movies/movie/?${title.replace(/\s+/g, '-').replace(':', '').replace('"', '').replace('.', '').toLowerCase() + '?id=' + id}">
                     <figure>
@@ -360,26 +442,26 @@ function listMovies(data) {
                         <p class="upcoming-movies__genre">Genre: ${genresName}</p>
                     </div>
                 </a>
-            </article>`
+            </article>`)
         }
     })
-
-    if (document.body.contains($('.actor-list'))) {
+    
+    if($('.actor-list').length) {
         let idMovie = data[0].id
         let titleMovie = data[0].title
 
-        $('.actor-list__list').innerHTML += '<h2>' + titleMovie + '</h2>'
+        $('.actor-list__list').append('<h2>' + titleMovie + '</h2>')
         getCast(movieBaseUrl + idMovie + '/credits?' + apiKey)
     }
 }
 
 function listActors(data) {
-    data.forEach(function (actor, i){
-        const { profile_path, name, id } = actor
+    $.each(data, function (i) {
+        const { profile_path, name, id } = data[i]
 
-        if (document.body.contains($('.home'))) {
+        if ($('.home').length) {
             if (i < 10) {
-                $('.popular-actors').innerHTML += `
+                $('.popular-actors').append(`
                 <article class="popular-actors__actor">
                     <a href="/actors/actor/?${name.replace(/\s+/g, '-').replace(':', '').toLowerCase() + '?id=' + id}">
                         <figure>
@@ -387,12 +469,12 @@ function listActors(data) {
                         </figure>
                         <h3>${name}</h3>
                     </a>
-                </article>`
+                </article>`)
             }
         }
 
-        if (document.body.contains($('.actor-list__list'))) {
-            $('.actor-list__list').innerHTML += `
+        if($('.actor-list__list').length) {
+            $('.actor-list__list').append(`
             <article class="popular-actors__actor">
                 <a href="/actors/actor/?${name.replace(/\s+/g, '-').replace(':', '').toLowerCase() + '?id=' + id}">
                     <figure>
@@ -400,7 +482,7 @@ function listActors(data) {
                     </figure>
                     <h3>${name}</h3>
                 </a>
-            </article>`
+            </article>`)
         }
     })
 }
@@ -414,11 +496,11 @@ function filter() {
     let year = filterForm.find('#year')
     let genre = filterForm.find('#genre')
 
-    // loadMore.addEventListener('click', nextPage(movieUrl))
+    // loadMore.on('click', nextPage(movieUrl))
 
-    if (document.body.contains($('.movie-list__list'))) {
-        title.addEventListener('change', function () {
-            if ($(this).val() != '') {
+    if($('.movie-list__list').length) {
+        title.on('change', function() {
+            if($(this).val() != '') {
                 $('.movie-list__list').empty()
                 getMovies(movieSearch + '&query=' + title.val())
                 nextPage(movieSearch + '&query=' + title.val())
@@ -427,9 +509,9 @@ function filter() {
                 getMovies(movieUrl)
             }
         })
-
-        year.addEventListener('change', function () {
-            if ($(this).val() != '') {
+    
+        year.on('change', function() {
+            if($(this).val() != '') {
                 $('.movie-list__list').empty()
                 getMovies(movieUrl + '&with_genres=' + genre.val() + '&primary_release_year=' + year.val())
                 nextPage(movieUrl + '&with_genres=' + genre.val() + '&primary_release_year=' + year.val())
@@ -438,9 +520,9 @@ function filter() {
                 getMovies(movieUrl)
             }
         })
-
-        genre.addEventListener('change', function () {
-            if ($(this).val() != '') {
+    
+        genre.on('change', function() {
+            if($(this).val() != '') {
                 $('.movie-list__list').empty()
                 getMovies(movieUrl + '&with_genres=' + genre.val() + '&primary_release_year=' + year.val())
                 nextPage(movieUrl + '&with_genres=' + genre.val() + '&primary_release_year=' + year.val())
@@ -454,9 +536,9 @@ function filter() {
     // Filter Person
     let personName = filterForm.find('#name')
 
-    if (document.body.contains($('.actor-list__filter'))) {
-        personName.addEventListener('change', function () {
-            if ($(this).val() != '') {
+    if($('.actor-list__filter').length) {
+        personName.on('change', function() {
+            if($(this).val() != '') {
                 $('.actor-list__list').empty()
                 getActors(actorSearch + '&query=' + personName.val())
             } else {
@@ -465,8 +547,8 @@ function filter() {
             }
         })
 
-        title.addEventListener('change', function () {
-            if ($(this).val() != '') {
+        title.on('change', function() {
+            if($(this).val() != '') {
                 $('.actor-list__list').empty()
                 getMovies(movieSearch + '&query=' + title.val())
             } else {
@@ -479,15 +561,16 @@ function filter() {
 }
 
 function genres(url) {
-    const fetchGenre = fetch(url).then(res => res.json()).then(data => {
-        if (document.body.contains($('.movie-list__filter'))) {
-            data.genres.forEach(function (genre) {
-                const { id, name } = genre
-                $('select#genre').innerHTML += '<option value="' + id + '">' + name + '</option>'
+    $.ajax({
+        url: url,
+        context: document.body
+    }).done(function (data) {
+        if ($('.movie-list__filter').length) {
+            $.each(data.genres, function (i) {
+                const { id, name } = data.genres[i]
+                $('select#genre').append('<option value="' + id + '">' + name + '</option>')
             })
         }
-    }).catch(function() {
-        setTimeout(function(){ return fetchGenre}, 500)
     })
 }
 
@@ -908,59 +991,60 @@ function languageCodes(code) {
     return code;
 }
 
+
 function nextPage(url) {
     let page = 1
 
-    $(window).addEventListener('scroll', function () {
+    $(window).on('scroll', function() {
         let scrollHeight = $(document).height();
         let scrollPosition = $(window).height() + $(window).scrollTop();
-
+        
         if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
             page++
-            if (document.body.contains($('.movie-list'))) {
+            if ($('.movie-list').length) {
                 getMovies(url + '&page=' + page)
             }
 
-            if (document.body.contains($('.actor-list'))) {
+            if ($('.actor-list').length) {
                 getActors(url + apiKey + page)
             }
         }
     })
 }
 
-window.addEventListener('DOMContentLoaded', function () {
-    $('body').innerHTML += '<div class="wrapper"></div>'
+$(document).ready(function () {
+    $('body').append('<div class="wrapper"></div>')
 
-    if (document.body.contains($('.home'))) {
+    if ($('.home').length) {
         getMovies(upcomingUrl)
         getActors(popularActorUrl)
     }
 
-    if (document.body.contains($('.movie-list'))) {
+    if ($('.movie-list').length) {
         getMovies(movieUrl)
     }
 
-    if (document.body.contains($('.movie-list__filter'))) {
+    if ($('.movie-list__filter').length) {
         filter()
     }
 
-    if (document.body.contains($('.actor-list'))) {
+    if ($('.actor-list').length) {
         getActors(listActorUrl + apiKey + '&sort_by=name.asc')
     }
 
-    if (document.body.contains($('.actor-list__filter'))) {
+    if ($('.actor-list__filter').length) {
         filter()
     }
 
-    if (document.body.contains($('.movie'))) {
+    if($('.movie').length) {
         getMovie(movieDetail)
     }
 
-    if (document.body.contains($('.actor'))) {
+    if($('.actor').length) {
         getActor(actorDetailUrl)
     }
 
-    window.addEventListener('resize', function () {
+    $(window).on('resize', function () {
         wrapperDistance()
     })
 
@@ -969,18 +1053,22 @@ window.addEventListener('DOMContentLoaded', function () {
 })
 
 function wrapperDistance() {
-    let distance = $('.wrapper').offsetLeft
+    let distance = $('.wrapper').offset().left
 
-    $$('.wrapper-left').forEach(function (item) {
-        item.style.paddingLeft = `${distance}px`
+    $('.wrapper-left').each(function () {
+        $(this).css({ 'padding-left': distance + 'px' })
     })
-    $$('.wrapper-left').forEach(function (item) {
-        item.style.paddingRight = `${distance}px`
+    $('.wrapper-right').each(function () {
+        $(this).css({ 'padding-right': distance + 'px' })
+    })
+
+    $('.wrapper-full').each(function () {
+        $(this).css({ 'padding': '0 ' + distance + 'px' })
     })
 }
 
 function header() {
-    $('.header__mobile').addEventListener('click', function () {
+    $('.header__mobile').on('click', function() {
         $(this).toggleClass('header__mobile--active')
         $('.header__menu').toggleClass('header__menu--active')
     })
