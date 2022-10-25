@@ -1,0 +1,23 @@
+.actor-list {
+    margin: 18.7rem 0 5rem;
+
+    &__filter {
+        @include filter;
+    }
+
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 3rem;
+
+        h2 {
+            text-align: center;
+            width: 100%;
+        }
+    }
+
+    &__actor {
+        @include card-actor;
+    }
+}
