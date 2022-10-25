@@ -1,9 +1,14 @@
+.home .banner {
+    display: flex;
+}
+
 .upcoming-movies {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 3rem;
     margin: 10rem auto 0;
+    transform: translateY(-40rem);
     
     h2 {
         text-align: center;
@@ -20,7 +25,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 3rem;
-    margin: 10rem auto;
+    margin: -20rem auto 10rem;
 
     h2 {
         width: 100%;

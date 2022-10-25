@@ -12,8 +12,10 @@ get_header();
 ?>
 <main class="movie">
     <section class="movie-details">
-        
     </section>
+    <div class="lds-roller-container">
+        <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </div>
 </main>
 <?php
 

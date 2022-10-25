@@ -22,14 +22,10 @@ get_header();
     </section>
     <section class="wrapper movie-list__list">
         
-        <!-- <span class="movie-list__more">Load more</span> -->
     </section>
-
-    <!-- <div class="movie-list__pagination">
-        <div class="page" id="prev">Previous Page</div>
-        <div class="current" id="current">1</div>
-        <div class="page" id="next">Next Page</div>
-    </div> -->
+    <div class="lds-roller-container">
+        <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </div>
 </main>
 <?php
 

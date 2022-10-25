@@ -1,6 +1,6 @@
 .actor {
     &-details {
-        margin-top: 10rem;
+        margin-top: 25rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -32,13 +32,14 @@
             margin-left: auto;
 
             @include max (900) {
-                max-width: 100%;                        
+                max-width: 100%;
             }
         }
     
         &__info {
             display: flex;
             flex-wrap: wrap;
+            margin-bottom: 10rem;
 
             @include max (900) {
                 justify-content: center;
@@ -57,13 +58,16 @@
             padding: 10rem 0;
             background-color: rgba($color: $black, $alpha: .5);
             border-radius: 10rem 10rem 0 0;
-            margin-top: 10rem;
             width: 100%;
     
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 3rem;
+
+            &:has(h3:only-child) {
+                display: none;
+            }
     
             .wrapper {
                 display: flex;
@@ -99,7 +103,7 @@
             gap: 3rem;
             width: 100%;
             background-color: rgba($color: $black, $alpha: .5);
-            padding-bottom: 10rem;
+            padding: 10rem 0;
     
             h3 {
                 font-size: 3rem;

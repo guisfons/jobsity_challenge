@@ -12,7 +12,9 @@ get_header();
 ?>
 <main class="actor">
     <section class="actor-details">
-        
+        <div class="lds-roller-container">
+            <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div>
     </section>
 </main>
 <?php

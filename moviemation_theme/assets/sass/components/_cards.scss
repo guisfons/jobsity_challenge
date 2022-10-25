@@ -26,6 +26,10 @@
         width: 100%;
     }
 
+    img {
+        object-fit: cover;
+    }
+
     div {
         position: absolute;
         top: 0;
@@ -67,6 +71,7 @@
     img {
         border-radius: .5rem;
         overflow: hidden;
+        object-fit: cover;
     }
 
     h3 {

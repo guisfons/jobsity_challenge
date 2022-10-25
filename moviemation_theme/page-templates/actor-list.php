@@ -19,6 +19,9 @@ get_header();
     </section>
     <section class="wrapper actor-list__list">
     </section>
+    <div class="lds-roller-container">
+        <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </div>
 </main>
 <?php
 
